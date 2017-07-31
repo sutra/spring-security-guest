@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.session.web.http.HeaderHttpSessionStrategy;
+import org.springframework.session.web.http.HttpSessionStrategy;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 @SpringBootApplication
@@ -36,14 +38,19 @@ public class Application {
 	}
 
 	@Bean
+	public HttpSessionStrategy httpSessionStrategy() {
+		return new HeaderHttpSessionStrategy();
+	}
+
+	@Bean
 	public GuestUserDetailsService guestUserDetailsService() {
 		return new GuestUserDetailsService() {
 
 			@Override
 			public UserDetails loadUser(GuestAuthenticationToken guestAuthenticationToken) {
-				Object details = guestAuthenticationToken.getDetails();
-				log.debug("Loading user for {}", details);
-				return new User("guest", "", AuthorityUtils.createAuthorityList("ROLE_GUEST"));
+				String clientToken = (String) guestAuthenticationToken.getPrincipal();
+				log.debug("Loading user for {}", clientToken);
+				return new User("guest " + clientToken, "", AuthorityUtils.createAuthorityList("ROLE_GUEST"));
 			}
 
 		};

@@ -20,7 +20,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.anyRequest()
 				.permitAll()
 				.and()
-			.apply(new GuestConfigurer<>(guestUserDetailsService));
+			.apply(new GuestConfigurer<>(guestUserDetailsService))
+				.permitAll();
 	}
 
 }

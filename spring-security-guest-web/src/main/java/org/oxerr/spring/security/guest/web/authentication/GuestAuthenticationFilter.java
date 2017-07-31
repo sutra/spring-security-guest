@@ -7,61 +7,73 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oxerr.spring.security.guest.authentication.GuestAuthenticationProvider;
 import org.oxerr.spring.security.guest.authentication.GuestAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationDetailsSource;
+import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.Assert;
-import org.springframework.web.filter.OncePerRequestFilter;
 
-public class GuestAuthenticationFilter extends OncePerRequestFilter {
+public class GuestAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-	private AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new GuestAuthenticationDetailsSource();
-	private final GuestAuthenticationProvider guestAuthenticationProvider;
+	private String headerName = "X-Client-Token";
 
-	public GuestAuthenticationFilter(GuestAuthenticationProvider guestAuthenticationProvider) {
-		this.guestAuthenticationProvider = guestAuthenticationProvider;
+	public GuestAuthenticationFilter() {
+		super(new AntPathRequestMatcher("/**", ""));
 	}
 
 	@Override
-	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-		return request.getMethod().equals("OPTIONS") || super.shouldNotFilter(request);
+	protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
+		return SecurityContextHolder.getContext().getAuthentication() == null && request.getHeader(headerName) != null;
 	}
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		if (isGuest(request)) {
-			SecurityContextHolder.getContext().setAuthentication(
-				createAuthentication((HttpServletRequest) request));
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws AuthenticationException, IOException, ServletException {
+		String clientToken = request.getHeader(headerName);
+		GuestAuthenticationToken authRequest = new GuestAuthenticationToken(clientToken);
+
+		// Allow subclasses to set the "details" property
+		setDetails(request, authRequest);
+
+		return this.getAuthenticationManager().authenticate(authRequest);
+	}
+
+	@Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+			Authentication authResult) throws IOException, ServletException {
+
+		SecurityContextHolder.getContext().setAuthentication(authResult);
+
+		getRememberMeServices().loginSuccess(request, response, authResult);
+
+		// Fire event
+		if (this.eventPublisher != null) {
+			eventPublisher.publishEvent(new InteractiveAuthenticationSuccessEvent(
+					authResult, this.getClass()));
 		}
 
-		filterChain.doFilter(request, response);
+		chain.doFilter(request, response);
 	}
 
 	/**
-	 * Returns if a {@link GuestAuthenticationToken} should be created.
+	 * Provided so that subclasses may configure what is put into the authentication
+	 * request's details property.
 	 *
-	 * @param request the {@link HttpServletRequest}.
-	 * @return true to indicate that the method
-	 * {@link #createAuthentication(HttpServletRequest)} should be invoked.
+	 * @param request that an authentication request is being created for
+	 * @param authRequest the authentication request object that should have its details
+	 * set
 	 */
-	protected boolean isGuest(HttpServletRequest request) {
-		return SecurityContextHolder.getContext().getAuthentication() == null;
+	protected void setDetails(HttpServletRequest request,
+			GuestAuthenticationToken authRequest) {
+		authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
 	}
 
-	protected Authentication createAuthentication(HttpServletRequest request) {
-		GuestAuthenticationToken auth = new GuestAuthenticationToken();
-		auth.setDetails(authenticationDetailsSource.buildDetails(request));
-
-		return guestAuthenticationProvider.authenticate(auth);
-	}
-
-	public void setAuthenticationDetailsSource(
-			AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource) {
-		Assert.notNull(authenticationDetailsSource, "AuthenticationDetailsSource required");
-		this.authenticationDetailsSource = authenticationDetailsSource;
+	public void setHeaderName(String headerName) {
+		Assert.hasText(headerName, "Header name must not be empty or null");
+		this.headerName = headerName;
 	}
 
 }
