@@ -9,8 +9,9 @@ public class GuestAuthenticationToken extends AbstractAuthenticationToken {
 
 	private Object principal;
 
-	public GuestAuthenticationToken() {
+	public GuestAuthenticationToken(String clientToken) {
 		super(null);
+		this.principal = clientToken;
 		setAuthenticated(false);
 	}
 
