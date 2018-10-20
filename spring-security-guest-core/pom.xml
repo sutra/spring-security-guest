@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.oxerr.spring.security</groupId>
 		<artifactId>spring-security-guest</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 	</parent>
 	<artifactId>spring-security-guest-core</artifactId>
 	<name>Spring Security Guest Core</name>
