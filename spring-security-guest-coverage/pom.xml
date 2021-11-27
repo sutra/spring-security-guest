@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.oxerr.spring.security.guest</groupId>
 		<artifactId>spring-security-guest</artifactId>
-		<version>1.0.2</version>
+		<version>1.0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>spring-security-guest-coverage</artifactId>
 	<name>Spring Security Guest Coverage</name>
