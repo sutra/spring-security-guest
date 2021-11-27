@@ -7,7 +7,7 @@
 		https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.oxerr.spring.security</groupId>
+		<groupId>org.oxerr.spring.security.guest</groupId>
 		<artifactId>spring-security-guest</artifactId>
 		<version>1.0.1</version>
 	</parent>

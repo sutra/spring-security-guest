@@ -11,7 +11,7 @@
 		<artifactId>oxerr-parent</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<groupId>org.oxerr.spring.security</groupId>
+	<groupId>org.oxerr.spring.security.guest</groupId>
 	<artifactId>spring-security-guest</artifactId>
 	<version>1.0.1</version>
 	<packaging>pom</packaging>
