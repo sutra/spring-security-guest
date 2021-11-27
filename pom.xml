@@ -29,6 +29,7 @@
 		<module>spring-security-guest-web</module>
 		<module>spring-security-guest-config</module>
 		<module>spring-security-guest-samples</module>
+		<module>spring-security-guest-coverage</module>
 	</modules>
 	<build>
 		<plugins>
@@ -38,6 +39,24 @@
 				<configuration>
 					<rulesUri>file:///${session.executionRootDirectory}/maven-version-rules.xml</rulesUri>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>
