@@ -13,7 +13,7 @@
 	</parent>
 	<artifactId>spring-security-guest-samples-helloworld</artifactId>
 	<properties>
-		<spring-boot.version>2.5.3</spring-boot.version>
+		<spring-boot.version>2.6.0</spring-boot.version>
 	</properties>
 	<build>
 		<plugins>
@@ -22,15 +22,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<version>${spring-boot.version}</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 	<dependencyManagement>
 		<dependencies>
