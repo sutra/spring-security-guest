@@ -13,7 +13,7 @@
 	</parent>
 	<groupId>org.oxerr.spring.security.guest</groupId>
 	<artifactId>spring-security-guest</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.3</version>
 	<packaging>pom</packaging>
 	<name>Spring Security Guest</name>
 	<description>Tracking guest users.</description>
