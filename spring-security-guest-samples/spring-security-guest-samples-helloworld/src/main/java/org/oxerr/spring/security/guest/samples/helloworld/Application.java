@@ -29,8 +29,8 @@ public class Application {
 	 * @return the filter registration bean for the {@link CommonsRequestLoggingFilter}.
 	 */
 	@Bean
-	public FilterRegistrationBean commonsRequestLoggingFilterRegistrationBean() {
-		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+	public FilterRegistrationBean<CommonsRequestLoggingFilter> commonsRequestLoggingFilterRegistrationBean() {
+		FilterRegistrationBean<CommonsRequestLoggingFilter> registrationBean = new FilterRegistrationBean<>();
 		CommonsRequestLoggingFilter requestLoggingFilter = new CommonsRequestLoggingFilter();
 		registrationBean.setFilter(requestLoggingFilter);
 		registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
