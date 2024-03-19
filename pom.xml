@@ -13,7 +13,7 @@
 	</parent>
 	<groupId>org.oxerr.spring.security.guest</groupId>
 	<artifactId>spring-security-guest</artifactId>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<packaging>pom</packaging>
 	<name>Spring Security Guest</name>
 	<description>Tracking guest users.</description>
@@ -22,7 +22,7 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-security.version>5.6.12</spring-security.version>
+		<spring-security.version>5.7.12</spring-security.version>
 	</properties>
 	<modules>
 		<module>spring-security-guest-core</module>
