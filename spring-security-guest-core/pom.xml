@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.oxerr.spring.security.guest</groupId>
 		<artifactId>spring-security-guest</artifactId>
-		<version>1.0.4-SNAPSHOT</version>
+		<version>1.0.4</version>
 	</parent>
 	<artifactId>spring-security-guest-core</artifactId>
 	<name>Spring Security Guest Core</name>
