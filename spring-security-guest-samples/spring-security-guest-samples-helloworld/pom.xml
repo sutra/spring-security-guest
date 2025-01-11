@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.oxerr.spring.security.guest.samples</groupId>
 		<artifactId>spring-security-guest-samples</artifactId>
-		<version>1.0.5</version>
+		<version>1.0.6-SNAPSHOT</version>
 	</parent>
 	<artifactId>spring-security-guest-samples-helloworld</artifactId>
 	<properties>
